@@ -28,7 +28,7 @@ class Neo4jDB:
             )
             await self._driver.verify_connectivity()
             self._connected = True
-            logger.info("Neo4j AuraDB connected ✓")
+            logger.info("Neo4j AuraDB connected successfully")
         except Exception as exc:
             logger.error(f"Neo4j connection failed: {exc}. Falling back to in-memory store.")
             self._driver = None

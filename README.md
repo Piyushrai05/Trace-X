@@ -1,4 +1,4 @@
-# TraceX — Food Supply Chain Traceability & Rapid Incident Containment Platform
+# TraceX - Food Supply Chain Traceability & Rapid Incident Containment Platform
 
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.111.0-teal?logo=fastapi)](https://fastapi.tiangolo.com)
@@ -13,75 +13,75 @@
 
 ```
 Supply Chain Graph Flow:
-Supplier ──► IngredientBatch ──► PrepLot ──► Dish ──► Order ──► Customer
-                                    │                   ▲
-                                    ▼                   │
-                                 Kitchen ───────────────┘
-                                    ▲
-                                    │
-                               KitchenTask (NOTIFIED ➔ ACKNOWLEDGED ➔ QUARANTINED ➔ DISPOSED)
+Supplier -> IngredientBatch -> PrepLot -> Dish -> Order -> Customer
+                                  |                 ^
+                                  v                 |
+                               Kitchen -------------+
+                                  ^
+                                  |
+                             KitchenTask (NOTIFIED -> ACKNOWLEDGED -> QUARANTINED -> DISPOSED)
 ```
 
 ---
 
-## 🌟 Key Platform Features
+## Key Platform Features
 
-### 1. ⚡ Sub-Second Forward Recall Blast Radius
+### 1. Sub-Second Forward Recall Blast Radius
 - **Hop-by-Hop Recursive Graph Traversal**: Instantly trace a contaminated batch (`PNR-2047`) across suppliers, prep lots, dishes, cloud kitchens, and end-customer orders with sub-50ms query latency.
 - **Interactive Cytoscape.js Canvas**: Node grouping, multi-hop edge tracing, cluster inspection, and live node expansion.
 
-### 2. 🛡️ Kitchen Action Tracker (Containment State Machine)
-- **4-Stage Quarantine Protocol**: Enforces immutable forward progression: `NOTIFIED` $\rightarrow$ `ACKNOWLEDGED` $\rightarrow$ `QUARANTINED` $\rightarrow$ `DISPOSED`.
+### 2. Kitchen Action Tracker (Containment State Machine)
+- **4-Stage Quarantine Protocol**: Enforces immutable forward progression: `NOTIFIED` -> `ACKNOWLEDGED` -> `QUARANTINED` -> `DISPOSED`.
 - **409 Conflict Invariant**: Prevents illegal backward state jumps or duplicate task creation.
 - **Automatic Containment Resolution**: Dynamically transitions the entire recall status to `CONTAINED` once all kitchen tasks reach `DISPOSED`.
 
-### 3. ⏱️ 24-Hour Contamination Timeline Replay
+### 3. 24-Hour Contamination Timeline Replay
 - **Chronological Propagation Scrubber**: Play, pause, and scrub through 24 hourly time buckets with 1x, 2x, and 4x speed controls.
 - **Synchronous Visuals**: Dual-mode rendering with a Recharts cumulative exposure area chart and live Cytoscape graph node highlighting.
 
-### 4. 🤖 Ask the Graph (Natural Language Cypher Engine)
+### 4. Ask the Graph (Natural Language Cypher Engine)
 - **AI-Powered Cypher Generation**: Ask complex supply chain questions in plain English (e.g., *"Which suppliers delivered critical batches?"*, *"Find top 5 suppliers with most complaints"*).
 - **Strict Read-Only Security Guard**: Tokenized Cypher parsing that validates read-only constraints and strictly rejects mutation keywords (`CREATE`, `DELETE`, `MERGE`, `DROP`, `SET`, `REMOVE`, `CALL`). Enforces strict `LIMIT 200`.
 
-### 5. 🔍 Reverse Investigation (Root-Cause Analysis)
+### 5. Reverse Investigation (Root-Cause Analysis)
 - **Upstream Graph Intersection**: Pinpoint common contaminated batches and suppliers starting from isolated customer complaints.
 
-### 6. 🚨 Live Demo Mode & Incident Simulator (SSE)
+### 6. Live Demo Mode & Incident Simulator (SSE)
 - **Real-Time Event Broadcasting**: Server-Sent Events (`/api/stream`) broadcasting live temperature breaches and contamination alerts.
 - **Instant Demo Reset**: Single-click pristine seed state restoration.
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
-┌────────────────────────────────┐     REST / SSE      ┌─────────────────────────────┐     Bolt / TLS     ┌────────────────────────────┐
-│  React 18 + Vite (TypeScript)  │ ──────────────────► │  FastAPI (Python 3.11+)     │ ─────────────────► │  Neo4j AuraDB / Mock DB    │
-│  - Tailwind CSS                │ ◄────────────────── │  - Recall & Task Engine     │ ◄───────────────── │  - Parameterized Cypher    │
-│  - Cytoscape.js & Leaflet      │   (EventSource /    │  - Natural Language Cypher  │                    │  - Unique Constraints      │
-│  - Recharts Timeline Scrubber  │    JSON APIs)       │  - SSE Broadcast Stream     │                    │  - <40k Nodes Budget       │
-└────────────────────────────────┘                     └─────────────────────────────┘                    └────────────────────────────┘
++--------------------------------+     REST / SSE      +-----------------------------+     Bolt / TLS     +----------------------------+
+|  React 18 + Vite (TypeScript)  | ------------------> |  FastAPI (Python 3.11+)     | -----------------> |  Neo4j AuraDB / Mock DB    |
+|  - Tailwind CSS                | <------------------ |  - Recall & Task Engine     | <----------------- |  - Parameterized Cypher    |
+|  - Cytoscape.js & Leaflet      |   (EventSource /    |  - Natural Language Cypher  |                    |  - Unique Constraints      |
+|  - Recharts Timeline Scrubber  |    JSON APIs)       |  - SSE Broadcast Stream     |                    |  - <40k Nodes Budget       |
++--------------------------------+                     +-----------------------------+                    +----------------------------+
       http://localhost:5173                                  http://localhost:8000
 ```
 
 ---
 
-## ⌨️ Keyboard Shortcuts
+## Keyboard Shortcuts
 
 | Shortcut | Action |
 | :--- | :--- |
-| <kbd>Ctrl</kbd> + <kbd>K</kbd> / <kbd>Cmd</kbd> + <kbd>K</kbd> | Open **Ask Graph** AI natural language query omnibar |
-| <kbd>Shift</kbd> + <kbd>D</kbd> | Toggle **Live Demo Mode** incident simulator and reset drawer |
-| <kbd>Esc</kbd> | Close open modals, drawers, or command palettes |
+| Ctrl + K / Cmd + K | Open **Ask Graph** AI natural language query omnibar |
+| Shift + D | Toggle **Live Demo Mode** incident simulator and reset drawer |
+| Esc | Close open modals, drawers, or command palettes |
 
 ---
 
-## 🚀 Quick Start Guide
+## Quick Start Guide
 
 ### Prerequisites
 - Python 3.11+
 - Node.js 18+ & npm
-- Neo4j AuraDB instance ([console.neo4j.io](https://console.neo4j.io)) *or automatic zero-config in-memory mock fallback*
+- Neo4j AuraDB instance (console.neo4j.io) or automatic zero-config in-memory mock fallback
 
 ---
 
@@ -121,8 +121,8 @@ Run the backend server:
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-- **Swagger Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
-- **Health Check**: [http://localhost:8000/api/health](http://localhost:8000/api/health)
+- **Swagger Docs**: http://localhost:8000/docs
+- **Health Check**: http://localhost:8000/api/health
 
 ---
 
@@ -139,13 +139,13 @@ npm install
 npm run dev
 ```
 
-- **Frontend Dashboard**: [http://localhost:5173](http://localhost:5173)
+- **Frontend Dashboard**: http://localhost:5173
 
 ---
 
-## 🧪 Testing & Verification
+## Testing & Verification
 
-Run the comprehensive backend test suite:
+Run the backend test suite:
 ```bash
 cd backend
 pytest -v
@@ -168,7 +168,7 @@ npm run build
 
 ---
 
-## 📡 API Reference
+## API Reference
 
 ### Health & Overview
 | Method | Path | Description |
@@ -189,7 +189,7 @@ npm run build
 | Method | Path | Description |
 | :--- | :--- | :--- |
 | `GET` | `/api/recalls/{code}/tasks` | Per-kitchen task list & % containment progress |
-| `PATCH` | `/api/tasks/{id}` | Advance task state (`ACKNOWLEDGED` $\rightarrow$ `QUARANTINED` $\rightarrow$ `DISPOSED`) |
+| `PATCH` | `/api/tasks/{id}` | Advance task state (`ACKNOWLEDGED` -> `QUARANTINED` -> `DISPOSED`) |
 
 ### Natural Language & Live Demo
 | Method | Path | Description |
@@ -201,20 +201,20 @@ npm run build
 
 ---
 
-## 📊 Graph Schema
+## Graph Schema
 
 ```cypher
 (:Supplier)-[:SUPPLIED]->(:IngredientBatch)-[:USED_IN]->(:PrepLot)-[:MADE_INTO]->(:Dish)-[:SOLD_IN]->(:Order)-[:PLACED_BY]->(:Customer)
-                               │                               │
-                               ▼                               ▼
+                               |                               |
+                               v                               v
                       (:TempReading)                     (:Kitchen)
-                                                               ▲
-                                                               │
+                                                               ^
+                                                               |
                                (:Recall)-[:HAS_TASK]->(:KitchenTask)
 ```
 
 ---
 
-## 🏆 Hackathon Demo Guide
+## Hackathon Demo Guide
 
 For a step-by-step 3-minute pitch script with judging scenarios, please refer to [DEMO.md](./DEMO.md).

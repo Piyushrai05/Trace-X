@@ -548,7 +548,7 @@ export function SupplyNetworkMap({ clusters = [], loading, className }: SupplyNe
                   type="submit"
                   className="px-4 py-1.5 rounded-lg bg-cyan text-bg text-xs font-bold hover:bg-cyan-bright transition-colors shadow-cyan-glow"
                 >
-                  {savedKey ? 'Saved ✓' : 'Save & Connect'}
+                  {savedKey ? 'Saved' : 'Save & Connect'}
                 </button>
               </div>
             </form>
