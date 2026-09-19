@@ -1,0 +1,51 @@
+id,order_id,text,severity,created_at
+COMP-001,ORD_PNR_00001,Severe food poisoning and cramps after eating Paneer Tikka (Order ORD-4081),CRITICAL,2026-09-19T09:15:00
+COMP-002,ORD_PNR_00002,Acute stomach upset and nausea following Shahi Paneer dinner (Order ORD-4082),CRITICAL,2026-09-19T10:30:00
+COMP-003,ORD_PNR_00003,Hospitalized with gastroenteritis after Paneer Butter Masala meal (Order ORD-4083),CRITICAL,2026-09-19T11:05:00
+COMP_004,ORD_BULK_07658,Quality and temperature concern reported for food order ORD_BULK_07658,MEDIUM,2026-09-19T06:00:00
+COMP_005,ORD_BULK_06353,Quality and temperature concern reported for food order ORD_BULK_06353,LOW,2026-09-19T06:10:00
+COMP_006,ORD_BULK_06622,Quality and temperature concern reported for food order ORD_BULK_06622,LOW,2026-09-19T06:20:00
+COMP_007,ORD_PNR_01101,Quality and temperature concern reported for food order ORD_PNR_01101,LOW,2026-09-19T06:30:00
+COMP_008,ORD_BULK_04865,Quality and temperature concern reported for food order ORD_BULK_04865,LOW,2026-09-19T06:40:00
+COMP_009,ORD_PNR_01428,Quality and temperature concern reported for food order ORD_PNR_01428,LOW,2026-09-19T06:50:00
+COMP_010,ORD_BULK_08480,Quality and temperature concern reported for food order ORD_BULK_08480,LOW,2026-09-19T07:00:00
+COMP_011,ORD_BULK_09360,Quality and temperature concern reported for food order ORD_BULK_09360,MEDIUM,2026-09-19T07:10:00
+COMP_012,ORD_PNR_00980,Quality and temperature concern reported for food order ORD_PNR_00980,MEDIUM,2026-09-19T07:20:00
+COMP_013,ORD_BULK_07789,Quality and temperature concern reported for food order ORD_BULK_07789,LOW,2026-09-19T07:30:00
+COMP_014,ORD_BULK_02736,Quality and temperature concern reported for food order ORD_BULK_02736,LOW,2026-09-19T07:40:00
+COMP_015,ORD_PNR_01803,Quality and temperature concern reported for food order ORD_PNR_01803,MEDIUM,2026-09-19T07:50:00
+COMP_016,ORD_BULK_08471,Quality and temperature concern reported for food order ORD_BULK_08471,LOW,2026-09-19T08:00:00
+COMP_017,ORD_PNR_00672,Quality and temperature concern reported for food order ORD_PNR_00672,LOW,2026-09-19T08:10:00
+COMP_018,ORD_BULK_09210,Quality and temperature concern reported for food order ORD_BULK_09210,LOW,2026-09-19T08:20:00
+COMP_019,ORD_BULK_04753,Quality and temperature concern reported for food order ORD_BULK_04753,LOW,2026-09-19T08:30:00
+COMP_020,ORD_BULK_05953,Quality and temperature concern reported for food order ORD_BULK_05953,LOW,2026-09-19T08:40:00
+COMP_021,ORD_BULK_07019,Quality and temperature concern reported for food order ORD_BULK_07019,MEDIUM,2026-09-19T08:50:00
+COMP_022,ORD_PNR_00599,Quality and temperature concern reported for food order ORD_PNR_00599,MEDIUM,2026-09-19T09:00:00
+COMP_023,ORD_BULK_04063,Quality and temperature concern reported for food order ORD_BULK_04063,LOW,2026-09-19T09:10:00
+COMP_024,ORD_BULK_06961,Quality and temperature concern reported for food order ORD_BULK_06961,LOW,2026-09-19T09:20:00
+COMP_025,ORD_BULK_04025,Quality and temperature concern reported for food order ORD_BULK_04025,MEDIUM,2026-09-19T09:30:00
+COMP_026,ORD_BULK_06494,Quality and temperature concern reported for food order ORD_BULK_06494,LOW,2026-09-19T09:40:00
+COMP_027,ORD_BULK_07210,Quality and temperature concern reported for food order ORD_BULK_07210,LOW,2026-09-19T09:50:00
+COMP_028,ORD_PNR_00365,Quality and temperature concern reported for food order ORD_PNR_00365,LOW,2026-09-19T10:00:00
+COMP_029,ORD_BULK_07717,Quality and temperature concern reported for food order ORD_BULK_07717,LOW,2026-09-19T10:10:00
+COMP_030,ORD_BULK_01971,Quality and temperature concern reported for food order ORD_BULK_01971,LOW,2026-09-19T10:20:00
+COMP_031,ORD_BULK_02223,Quality and temperature concern reported for food order ORD_BULK_02223,MEDIUM,2026-09-19T10:30:00
+COMP_032,ORD_BULK_03005,Quality and temperature concern reported for food order ORD_BULK_03005,LOW,2026-09-19T10:40:00
+COMP_033,ORD_BULK_07789,Quality and temperature concern reported for food order ORD_BULK_07789,LOW,2026-09-19T10:50:00
+COMP_034,ORD_BULK_04608,Quality and temperature concern reported for food order ORD_BULK_04608,LOW,2026-09-19T11:00:00
+COMP_035,ORD_PNR_00265,Quality and temperature concern reported for food order ORD_PNR_00265,LOW,2026-09-19T11:10:00
+COMP_036,ORD_BULK_07408,Quality and temperature concern reported for food order ORD_BULK_07408,LOW,2026-09-19T11:20:00
+COMP_037,ORD_BULK_08308,Quality and temperature concern reported for food order ORD_BULK_08308,LOW,2026-09-19T11:30:00
+COMP_038,ORD_BULK_03573,Quality and temperature concern reported for food order ORD_BULK_03573,LOW,2026-09-19T11:40:00
+COMP_039,ORD_BULK_05399,Quality and temperature concern reported for food order ORD_BULK_05399,LOW,2026-09-19T11:50:00
+COMP_040,ORD_PNR_00765,Quality and temperature concern reported for food order ORD_PNR_00765,LOW,2026-09-19T12:00:00
+COMP_041,ORD_BULK_03363,Quality and temperature concern reported for food order ORD_BULK_03363,LOW,2026-09-19T12:10:00
+COMP_042,ORD_BULK_03349,Quality and temperature concern reported for food order ORD_BULK_03349,LOW,2026-09-19T12:20:00
+COMP_043,ORD_BULK_02772,Quality and temperature concern reported for food order ORD_BULK_02772,LOW,2026-09-19T12:30:00
+COMP_044,ORD_BULK_08253,Quality and temperature concern reported for food order ORD_BULK_08253,LOW,2026-09-19T12:40:00
+COMP_045,ORD_BULK_06551,Quality and temperature concern reported for food order ORD_BULK_06551,MEDIUM,2026-09-19T12:50:00
+COMP_046,ORD_BULK_05160,Quality and temperature concern reported for food order ORD_BULK_05160,LOW,2026-09-19T13:00:00
+COMP_047,ORD_BULK_05287,Quality and temperature concern reported for food order ORD_BULK_05287,LOW,2026-09-19T13:10:00
+COMP_048,ORD_BULK_04960,Quality and temperature concern reported for food order ORD_BULK_04960,LOW,2026-09-19T13:20:00
+COMP_049,ORD_BULK_02278,Quality and temperature concern reported for food order ORD_BULK_02278,LOW,2026-09-19T13:30:00
+COMP_050,ORD_BULK_07462,Quality and temperature concern reported for food order ORD_BULK_07462,MEDIUM,2026-09-19T13:40:00
