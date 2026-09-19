@@ -1,4 +1,8 @@
-# TraceX - Food Supply Chain Traceability & Rapid Incident Containment Platform
+# TraceX - Food Supply Chain Recall Intelligence
+
+**Food supply chain recall intelligence, built on a Neo4j Aura graph.**
+
+TraceX connects every step of the food supply chain: supplier, ingredient batch, prep lot, dish, order, and customer. It helps teams find and stop contaminated food fast.
 
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.111.0-teal?logo=fastapi)](https://fastapi.tiangolo.com)
@@ -7,52 +11,28 @@
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v3.4-38B2AC?logo=tailwindcss)](https://tailwindcss.com)
 [![Cytoscape.js](https://img.shields.io/badge/Cytoscape.js-Graph%20Engine-ea580c)](https://js.cytoscape.org/)
 
-**TraceX** is an enterprise-grade food supply chain traceability and rapid incident containment platform built for cloud-kitchen networks. It enables sub-second blast-radius calculation, automated multi-kitchen recall orchestration, chronological contamination timeline replaying, and natural language graph querying over Neo4j.
+Repository: [https://github.com/Piyushrai05/Trace-X.git](https://github.com/Piyushrai05/Trace-X.git)
 
 ---
 
-```
-Supply Chain Graph Flow:
-Supplier -> IngredientBatch -> PrepLot -> Dish -> Order -> Customer
-                                  |                 ^
-                                  v                 |
-                               Kitchen -------------+
-                                  ^
-                                  |
-                             KitchenTask (NOTIFIED -> ACKNOWLEDGED -> QUARANTINED -> DISPOSED)
-```
+## What It Does
+
+- **Forward recall trace:** Pick a flagged batch and see every kitchen, dish, and order it reached in sub-second time.
+- **Reverse investigation:** Start from customer complaints and find the most likely common upstream source.
+- **Graph explorer:** Click any node to see its exact path and metadata through the supply chain.
+- **Kitchen action tracker:** 4-stage operational quarantine state machine (`NOTIFIED` -> `ACKNOWLEDGED` -> `QUARANTINED` -> `DISPOSED`) with audit logging.
+- **Contamination timeline replay:** 24-hour chronological scrubber with live Cytoscape graph highlighting and Recharts cumulative area metrics.
+- **Ask the Graph:** Natural language question-to-Cypher engine with strict read-only safety validation and `LIMIT 200` enforcement.
 
 ---
 
-## Key Platform Features
+## Tech Stack & Architecture
 
-### 1. Sub-Second Forward Recall Blast Radius
-- **Hop-by-Hop Recursive Graph Traversal**: Instantly trace a contaminated batch (`PNR-2047`) across suppliers, prep lots, dishes, cloud kitchens, and end-customer orders with sub-50ms query latency.
-- **Interactive Cytoscape.js Canvas**: Node grouping, multi-hop edge tracing, cluster inspection, and live node expansion.
+- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, Cytoscape.js, Leaflet, Recharts
+- **Backend:** FastAPI (Python 3.11+), Async Neo4j Python Driver, Groq LLM Inference (Llama 3.3 70B)
+- **Database:** Neo4j AuraDB (or automatic zero-config in-memory mock fallback)
 
-### 2. Kitchen Action Tracker (Containment State Machine)
-- **4-Stage Quarantine Protocol**: Enforces immutable forward progression: `NOTIFIED` -> `ACKNOWLEDGED` -> `QUARANTINED` -> `DISPOSED`.
-- **409 Conflict Invariant**: Prevents illegal backward state jumps or duplicate task creation.
-- **Automatic Containment Resolution**: Dynamically transitions the entire recall status to `CONTAINED` once all kitchen tasks reach `DISPOSED`.
-
-### 3. 24-Hour Contamination Timeline Replay
-- **Chronological Propagation Scrubber**: Play, pause, and scrub through 24 hourly time buckets with 1x, 2x, and 4x speed controls.
-- **Synchronous Visuals**: Dual-mode rendering with a Recharts cumulative exposure area chart and live Cytoscape graph node highlighting.
-
-### 4. Ask the Graph (Natural Language Cypher Engine)
-- **AI-Powered Cypher Generation**: Ask complex supply chain questions in plain English (e.g., *"Which suppliers delivered critical batches?"*, *"Find top 5 suppliers with most complaints"*).
-- **Strict Read-Only Security Guard**: Tokenized Cypher parsing that validates read-only constraints and strictly rejects mutation keywords (`CREATE`, `DELETE`, `MERGE`, `DROP`, `SET`, `REMOVE`, `CALL`). Enforces strict `LIMIT 200`.
-
-### 5. Reverse Investigation (Root-Cause Analysis)
-- **Upstream Graph Intersection**: Pinpoint common contaminated batches and suppliers starting from isolated customer complaints.
-
-### 6. Live Demo Mode & Incident Simulator (SSE)
-- **Real-Time Event Broadcasting**: Server-Sent Events (`/api/stream`) broadcasting live temperature breaches and contamination alerts.
-- **Instant Demo Reset**: Single-click pristine seed state restoration.
-
----
-
-## Architecture
+The browser never talks to Neo4j directly. All queries go through the FastAPI backend.
 
 ```
 +--------------------------------+     REST / SSE      +-----------------------------+     Bolt / TLS     +----------------------------+
@@ -66,6 +46,138 @@ Supplier -> IngredientBatch -> PrepLot -> Dish -> Order -> Customer
 
 ---
 
+## Quick Start
+
+### 1. Prerequisites
+- Python 3.11+
+- Node.js 18+ & npm
+- A Neo4j Aura instance (the free tier works) or automatic in-memory fallback
+
+### 2. Clone
+```bash
+git clone https://github.com/Piyushrai05/Trace-X.git
+cd Trace-X
+```
+
+### 3. Configure
+```bash
+cp .env.example backend/.env
+```
+
+Open `backend/.env` and fill in your Aura details:
+```ini
+NEO4J_URI=neo4j+s://<instance-id>.databases.neo4j.io
+NEO4J_USERNAME=<from your Aura credentials file>
+NEO4J_PASSWORD=<from your Aura credentials file>
+NEO4J_DATABASE=<your database name, shown in the Aura console>
+FRONTEND_ORIGIN=http://localhost:5173
+
+# Optional: Groq LLM API Key for natural language "Ask the Graph"
+GROQ_API_KEY=gsk_your_groq_api_key_here
+GROQ_MODEL=llama-3.3-70b-versatile
+```
+
+Never commit `.env`.
+
+### 4. Load the Data
+
+In the Aura console, open **Query** and run `scripts/init_schema.cypher`. Then:
+
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python scripts/seed.py --reset
+```
+
+The data is fictional and sized to fit Aura Free (<40,000 nodes, <120,000 relationships).
+
+### 5. Run the Backend
+
+```bash
+uvicorn app.main:app --reload --port 8000
+```
+
+Check it at http://localhost:8000/api/health. It should say `connected`.
+
+### 6. Run the Frontend
+
+```bash
+cd ../frontend
+npm install
+npm run dev
+```
+
+Open http://localhost:5173.
+
+---
+
+## Try the Demo
+
+1. Open **Overview** and click **Trace impact** on the active recall (`PNR-2047`).
+2. Click a kitchen and a customer in the graph to see their exact path.
+3. Open **Reverse Investigation**, select complaints, and click **Find common source**.
+4. Press **Shift + D** to open the **Live Incident Simulator** and simulate cold-chain temperature breaches with SSE live streaming.
+5. Press **Ctrl + K** to open **Ask the Graph** and ask questions in plain English.
+
+---
+
+## Explore the Data in Neo4j (Query and Bloom)
+
+After seeding, you can look at the graph directly in the Aura console.
+
+- **Query tab:** Run Cypher and switch between table and graph views. Queries that `RETURN path` show as an interactive graph.
+- **Bloom tab:** A visual explorer. Use the search bar to pick a pattern (for example Order, Dish, PrepLot), expand nodes by double-clicking, and change colors and captions. It is a good backup view during a demo.
+
+### Data Model
+
+Every dish is a specific cooked unit linked to the prep lot it came from, so a trace never flags unrelated orders.
+
+```cypher
+(:Order)-[:CONTAINS_DISH]->(:Dish)-[:FROM_PREP_LOT]->(:PrepLot)
+(:Order)-[:PLACED_BY]->(:Customer)
+(:Supplier)-[:SUPPLIED]->(:IngredientBatch)-[:USED_IN]->(:PrepLot)
+(:Recall)-[:HAS_TASK]->(:KitchenTask)-[:FOR_KITCHEN]->(:Kitchen)
+```
+
+All data is fictional.
+
+### Useful Cypher Queries
+
+**1. See orders, their dishes, and the prep lots behind them**
+```cypher
+MATCH path = (o:Order)-[:CONTAINS_DISH]->(d:Dish)-[:FROM_PREP_LOT]->(p:PrepLot)
+RETURN path
+LIMIT 25
+```
+
+**2. List every node label with its properties and types**
+```cypher
+CALL db.schema.nodeTypeProperties()
+YIELD nodeLabels, propertyName, propertyTypes
+RETURN nodeLabels, propertyName, propertyTypes
+ORDER BY nodeLabels, propertyName
+```
+
+**3. See customers, their orders, and the dishes in them**
+```cypher
+MATCH path = (c:Customer)<-[:PLACED_BY]-(o:Order)-[:CONTAINS_DISH]->(d:Dish)
+RETURN path
+LIMIT 10
+```
+
+**4. Trace hero batch PNR-2047 blast radius**
+```cypher
+MATCH path = (s:Supplier)-[:SUPPLIED]->(b:IngredientBatch {code: 'PNR-2047'})-[:USED_IN]->(pl:PrepLot)-[:MADE_INTO]->(d:Dish)-[:SOLD_IN]->(o:Order)
+RETURN path
+LIMIT 50
+```
+
+Keep `LIMIT` small when drawing paths. Large results are slow to render and can crowd the graph view.
+
+---
+
 ## Keyboard Shortcuts
 
 | Shortcut | Action |
@@ -76,76 +188,9 @@ Supplier -> IngredientBatch -> PrepLot -> Dish -> Order -> Customer
 
 ---
 
-## Quick Start Guide
-
-### Prerequisites
-- Python 3.11+
-- Node.js 18+ & npm
-- Neo4j AuraDB instance (console.neo4j.io) or automatic zero-config in-memory mock fallback
-
----
-
-### 1. Backend Setup
-
-```bash
-# Navigate to backend
-cd backend
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate   # On Windows: .\venv\Scripts\Activate.ps1
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Configure environment
-cp .env.example .env
-```
-
-Edit `backend/.env` with your Neo4j credentials:
-```ini
-NEO4J_URI=neo4j+s://<your-aura-instance>.databases.neo4j.io
-NEO4J_USERNAME=neo4j
-NEO4J_PASSWORD=<your-password>
-NEO4J_DATABASE=neo4j
-FRONTEND_ORIGIN=http://localhost:5173
-```
-
-*(Optional) Seed the graph database:*
-```bash
-python scripts/seed.py
-```
-
-Run the backend server:
-```bash
-python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-```
-
-- **Swagger Docs**: http://localhost:8000/docs
-- **Health Check**: http://localhost:8000/api/health
-
----
-
-### 2. Frontend Setup
-
-```bash
-# Navigate to frontend
-cd frontend
-
-# Install dependencies
-npm install
-
-# Start Vite dev server
-npm run dev
-```
-
-- **Frontend Dashboard**: http://localhost:5173
-
----
-
 ## Testing & Verification
 
-Run the backend test suite:
+Run the comprehensive backend test suite:
 ```bash
 cd backend
 pytest -v
@@ -160,7 +205,7 @@ pytest -v
 - `test_hero_impact` & `test_reverse_investigation` (Graph traversal blast radius)
 - `test_generate_regulatory_package` & `test_dispatch_emergency_containment` (Regulatory copilot)
 
-Frontend TypeScript and build check:
+Frontend TypeScript build verification:
 ```bash
 cd frontend
 npm run build
@@ -201,20 +246,13 @@ npm run build
 
 ---
 
-## Graph Schema
+## Notes
 
-```cypher
-(:Supplier)-[:SUPPLIED]->(:IngredientBatch)-[:USED_IN]->(:PrepLot)-[:MADE_INTO]->(:Dish)-[:SOLD_IN]->(:Order)-[:PLACED_BY]->(:Customer)
-                               |                               |
-                               v                               v
-                      (:TempReading)                     (:Kitchen)
-                                                               ^
-                                                               |
-                               (:Recall)-[:HAS_TASK]->(:KitchenTask)
-```
+- Aura Free pauses after a few days of inactivity. Resume it in the Aura console before running.
+- All data is fictional. Notifications are simulated.
 
 ---
 
-## Hackathon Demo Guide
+## License
 
-For a step-by-step 3-minute pitch script with judging scenarios, please refer to [DEMO.md](./DEMO.md).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
