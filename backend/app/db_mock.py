@@ -310,6 +310,55 @@ class MockGraphStore:
                     'customer_count': 450,
                 }]
 
+        # 7b. Batch detail query for /api/batches/{code} (with temp readings) - must come before 7c
+        if "OPTIONAL MATCH (b)-[:HAS_TEMP]->(t:TempReading)" in q and "RETURN b, s, collect" in q:
+            code = params.get('code', 'PNR-2047')
+            if code not in self.batches:
+                return []
+            b = self.batches[code]
+            sup = self.get_supplier_by_id(b['supplier_id'])
+            sup_data = sup if sup else {'name': 'Supplier', 'id': 'SUP-001'}
+            # Generate synthetic temp readings showing a breach for PNR-2047
+            if code == 'PNR-2047':
+                temps = [
+                    {'ts': '2026-09-18T06:00:00', 'celsius': 4.1},
+                    {'ts': '2026-09-18T08:00:00', 'celsius': 4.3},
+                    {'ts': '2026-09-18T10:00:00', 'celsius': 5.2},
+                    {'ts': '2026-09-18T12:00:00', 'celsius': 8.7},
+                    {'ts': '2026-09-18T14:00:00', 'celsius': 14.8},
+                    {'ts': '2026-09-18T16:00:00', 'celsius': 12.1},
+                ]
+            else:
+                temps = [
+                    {'ts': '2026-09-18T06:00:00', 'celsius': 3.8},
+                    {'ts': '2026-09-18T12:00:00', 'celsius': 4.0},
+                ]
+            return [{
+                'b': b,
+                's': sup_data,
+                'temps': temps
+            }]
+
+        # 7c. Batch info query for timeline / existence check (no OPTIONAL MATCH)
+        if "OPTIONAL MATCH" not in q and (
+            "MATCH (s:Supplier)-[:SUPPLIED]->(b:IngredientBatch {code: $code})" in q or
+            "MATCH (b:IngredientBatch {code: $code})" in q
+        ) and ("RETURN b.code AS code" in q or "RETURN b" in q):
+            code = params.get('code', 'PNR-2047')
+            if code not in self.batches:
+                return []
+            b = self.batches[code]
+            sup = self.get_supplier_by_id(b['supplier_id'])
+            return [{
+                'code': b['code'],
+                'ingredient': b['ingredient'],
+                'received_at': b['received_at'],
+                'status': b['status'],
+                'supplier_name': sup['name'] if sup else 'Supplier',
+                'supplier_id': b['supplier_id'],
+                'b': b
+            }]
+
         # 8. Graph query for /api/recalls/{code}/graph
         if "query_main" in q or ("MATCH (s:Supplier)-[:SUPPLIED]->(b:IngredientBatch {code: $code})" in q and "RETURN s, b, pl, k, d" in q):
             code = params.get('code', 'PNR-2047')
